@@ -38,5 +38,8 @@ public class PriceEntity {
     @Enumerated(EnumType.STRING)
     private Constants.Currency curr;
 
+    @Transient
+    LocalDateTime applicationDate;
+
 
 }
