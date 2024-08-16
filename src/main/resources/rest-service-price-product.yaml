@@ -1,0 +1,120 @@
+openapi: 3.0.3
+info:
+  title: Price Management API
+  description: API for managing prices for products and brands.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+    description: Local server
+paths:
+  /prices:
+    get:
+      summary: Get Prices
+      description: Retrieve the price information based on product ID, brand ID, and application date.
+      parameters:
+        - name: id_product
+          in: query
+          description: ID of the product to retrieve prices for
+          required: true
+          schema:
+            type: integer
+            example: 35455
+        - name: id_brand
+          in: query
+          description: ID of the brand to retrieve prices for
+          required: true
+          schema:
+            type: integer
+            example: 1
+        - name: application_date
+          in: query
+          description: The date to check prices for, format yyyy-MM-dd-HH.mm.ss (e.g.,"20-06-14-15.00.00")
+          required: true
+          schema:
+            type: string
+            example: "2020-06-14-00:00:00"
+      responses:
+        '200':
+          description: Price information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceResponse'
+        '400':
+          description: Bad request due to invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '405':
+          description: Method not valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseMethodNotAllowed'
+    
+components:
+  schemas:
+    PriceRequest:
+      type: object
+      properties:
+        application_date:
+          type: string
+          format: date-time
+          example: "2020-06-14-00:00:00"
+        id_product:
+          type: integer
+          example: 35455
+        id_brand:
+          type: integer
+          example: 1
+      required:
+        - application_date
+        - id_product
+        - id_brand
+    PriceResponse:
+      type: object
+      properties:
+        id_price:
+          type: integer
+          example: 1
+        id_product:
+          type: integer
+          example: 35455
+        id_brand:
+          type: integer
+          example: 1
+        start_date:
+          type: string
+          format: date-time
+          example: "2020-06-14-00:00:00"
+        end_date:
+          type: string
+          format: date-time
+          example: "2020-12-31-23:59:59"
+        price:
+          type: number
+          format: float
+          example: 35.50
+
+    ErrorResponse:
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: "The request format is not correct. Please check it out"
+    
+    ErrorResponseMethodNotAllowed:
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          example: 405
+        message:
+          type: string
+          example: "Method not allowed to this request"
+
+       
