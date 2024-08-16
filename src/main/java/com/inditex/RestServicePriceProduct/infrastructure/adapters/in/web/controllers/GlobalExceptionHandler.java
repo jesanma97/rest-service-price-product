@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorResponse> handleJsonParseException(HttpRequestMethodNotSupportedException ex) {
+    public ResponseEntity<ErrorResponse> handleInvalidHTTPMethodException(HttpRequestMethodNotSupportedException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.METHOD_NOT_ALLOWED.value(),
                 MESSSAGE_EXCEPTION_ERROR_METHOD
