@@ -4,6 +4,7 @@ import com.inditex.RestServicePriceProduct.application.ports.in.PriceProductCons
 import com.inditex.RestServicePriceProduct.domain.PriceRequest;
 import com.inditex.RestServicePriceProduct.domain.PriceResponse;
 import com.inditex.RestServicePriceProduct.infrastructure.adapters.in.web.PriceProductConsultAdapter;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +25,7 @@ public class PriceProductRestController {
     }
 
     @GetMapping("/prices")
-    public PriceResponse getAllPricesByPriceRequest(@RequestBody PriceRequest priceRequest){
+    public PriceResponse getAllPricesByPriceRequest(@Valid @RequestBody PriceRequest priceRequest){
         return priceProductConsultPort.getAllPricesByPriceRequest(priceRequest);
     }
 
