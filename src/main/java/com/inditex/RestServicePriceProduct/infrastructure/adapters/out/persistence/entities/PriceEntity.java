@@ -40,6 +40,4 @@ public class PriceEntity {
 
     @Transient
     LocalDateTime applicationDate;
-
-
 }
