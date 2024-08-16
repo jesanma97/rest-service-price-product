@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "BRAND")
 public class BrandEntity {
     @Id
-    private Long id;
+    private long id;
 
     @Column(name = "BRAND_NAME")
     private String nameBrand;

@@ -15,7 +15,7 @@ public class PriceEntity {
 
     @Id
     @Column(name="PRICE_ID")
-    private Long idPrice;
+    private long idPrice;
 
     @ManyToOne
     @JoinColumn(name = "BRAND_ID")
