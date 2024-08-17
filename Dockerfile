@@ -8,10 +8,12 @@ LABEL maintainer="jesanma97@gmail.com"
 WORKDIR /app
 
 # Copy the JAR file of the application to the container
-COPY target/RestServicePriceProduct-0.0.1-SNAPSHOT.jar app.jar
+COPY target/RestServicePriceProduct-0.0.1-SNAPSHOT.jar rest-service-price-product.jar
 
 # Exposes the port on which the application will be available
 EXPOSE 8080
 
+ENV SPRING_DATASOURCE_H2_CONSOLE_SETTINGS_WEB_ALLOW_OTHERS=true
+
 # Command to run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","rest-service-price-product.jar"]
