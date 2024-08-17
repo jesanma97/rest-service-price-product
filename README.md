@@ -22,7 +22,7 @@ In the `src/main/resources` directory, you will find:
     - **File**: `rest-service-price-product.yaml`
     - **Usage**: The Swagger documentation can be viewed by importing the `rest-service-price-product.yaml` file into a Swagger UI tool or by using online Swagger editors such as [Swagger Editor](https://editor.swagger.io/).
 
-
+   
 ## Project Setup
 
 ### Spring Boot Configuration
