@@ -8,6 +8,21 @@ This project is a REST service for querying product price data based on a date r
 - **Maven**: Required to build the JAR file.
 - **Docker**: Required to build and run the Docker image.
 
+## Resources
+
+In the `src/main/resources` directory, you will find:
+
+1. **Postman Collection**: A Postman collection is included with all the tests for the API endpoints. This collection can be imported into Postman to easily test the API.
+
+    - **File**: `RestServicePriceProduct.postman_collection.json`
+    - **Usage**: Import the file into Postman by selecting `Import` in Postman and choosing the `RestServicePriceProduct.postman_collection.json` file from the `resources` directory.
+
+2. **Swagger Documentation**: The API is fully documented using Swagger. The Swagger YAML file provides a detailed description of each endpoint, including request parameters, response formats, and error codes.
+
+    - **File**: `rest-service-price-product.yaml`
+    - **Usage**: The Swagger documentation can be viewed by importing the `rest-service-price-product.yaml` file into a Swagger UI tool or by using online Swagger editors such as [Swagger Editor](https://editor.swagger.io/).
+
+
 ## Project Setup
 
 ### Spring Boot Configuration
