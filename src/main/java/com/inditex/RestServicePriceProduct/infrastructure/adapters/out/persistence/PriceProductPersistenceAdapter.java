@@ -27,7 +27,7 @@ public class PriceProductPersistenceAdapter implements PriceProductPersistencePo
 
     @Override
     public PriceResponse getAllPricesByPriceRequest(PriceRequest priceRequest) {
-        PriceResponse priceResponse = null;
+        PriceResponse priceResponse = new PriceResponse();
 
         try{
             PriceEntity priceEntity = PriceMapperEntity.INSTANCE.priceRequestToPriceEntity(priceRequest);
