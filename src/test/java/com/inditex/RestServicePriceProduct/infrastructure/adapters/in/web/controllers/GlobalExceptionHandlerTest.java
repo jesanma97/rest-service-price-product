@@ -2,6 +2,7 @@ package com.inditex.RestServicePriceProduct.infrastructure.adapters.in.web.contr
 
 import com.inditex.RestServicePriceProduct.domain.ErrorResponse;
 import com.inditex.RestServicePriceProduct.infrastructure.commons.exceptions.InvalidPriceRequestException;
+import com.inditex.RestServicePriceProduct.infrastructure.config.GlobalExceptionHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
