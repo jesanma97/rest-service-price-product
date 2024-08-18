@@ -1,4 +1,4 @@
-package com.inditex.RestServicePriceProduct.infrastructure.adapters.in.web.controllers;
+package com.inditex.RestServicePriceProduct.infrastructure.config;
 
 import com.inditex.RestServicePriceProduct.domain.ErrorResponse;
 import com.inditex.RestServicePriceProduct.infrastructure.commons.exceptions.InvalidPriceRequestException;

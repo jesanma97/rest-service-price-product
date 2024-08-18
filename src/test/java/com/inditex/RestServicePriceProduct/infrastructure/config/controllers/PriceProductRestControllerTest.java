@@ -1,8 +1,9 @@
-package com.inditex.RestServicePriceProduct.infrastructure.adapters.in.web.controllers;
+package com.inditex.RestServicePriceProduct.infrastructure.config.controllers;
 
 import com.inditex.RestServicePriceProduct.domain.PriceRequest;
 import com.inditex.RestServicePriceProduct.domain.PriceResponse;
 import com.inditex.RestServicePriceProduct.infrastructure.adapters.in.web.PriceProductConsultAdapter;
+import com.inditex.RestServicePriceProduct.infrastructure.adapters.in.web.controllers.PriceProductRestController;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
