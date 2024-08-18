@@ -4,6 +4,7 @@ import com.inditex.RestServicePriceProduct.application.ports.in.PriceProductCons
 import com.inditex.RestServicePriceProduct.domain.PriceRequest;
 import com.inditex.RestServicePriceProduct.domain.PriceResponse;
 import com.inditex.RestServicePriceProduct.infrastructure.adapters.in.web.PriceProductConsultAdapter;
+import com.inditex.RestServicePriceProduct.infrastructure.commons.Endpoints;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(Endpoints.PARENT_URL)
 public class PriceProductRestController {
 
     private final PriceProductConsultPort priceProductConsultPort;
@@ -41,7 +42,7 @@ public class PriceProductRestController {
      * This method uses the `PriceProductConsultPort` interface to delegate the logic for retrieving the pricing
      * information from the underlying data sources.
      */
-    @GetMapping("/prices")
+    @GetMapping(Endpoints.PRICES)
     public PriceResponse getAllPricesByPriceRequest(@Valid @RequestBody PriceRequest priceRequest){
         return priceProductConsultPort.getAllPricesByPriceRequest(priceRequest);
     }

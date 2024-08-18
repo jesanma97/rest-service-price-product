@@ -1,4 +1,4 @@
-package com.inditex.RestServicePriceProduct.infrastructure.adapters.in.web.controllers;
+package com.inditex.RestServicePriceProduct.infrastructure.config;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.inditex.RestServicePriceProduct.domain.ErrorResponse;
