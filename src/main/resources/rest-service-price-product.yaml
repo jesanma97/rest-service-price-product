@@ -45,13 +45,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorResponseBadRequest'
+        '404':
+          description: Not Found Price Information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseNotFound'
         '405':
           description: Method not valid
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponseMethodNotAllowed'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseInternalServerError'
     
 components:
   schemas:
@@ -97,7 +109,7 @@ components:
           format: float
           example: 35.50
 
-    ErrorResponse:
+    ErrorResponseBadRequest:
       type: object
       properties:
         errorCode:
@@ -116,5 +128,25 @@ components:
         message:
           type: string
           example: "Method not allowed to this request"
+
+    ErrorResponseNotFound:
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          example: 404
+        message:
+          type: string
+          example: "No price found for the given parameters."
+
+    ErrorResponseInternalServerError:
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          example: 500
+        message:
+          type: string
+          example: "An error occurred while trying to obtain the price information"
 
        
