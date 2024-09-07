@@ -8,9 +8,7 @@ import com.inditex.RestServicePriceProduct.infrastructure.adapters.out.persisten
 import com.inditex.RestServicePriceProduct.infrastructure.adapters.out.persistence.entities.PriceEntity;
 import com.inditex.RestServicePriceProduct.infrastructure.adapters.out.persistence.mappers.PriceMapperEntity;
 import com.inditex.RestServicePriceProduct.infrastructure.adapters.out.persistence.mappers.PriceResponseDTOMapper;
-import com.inditex.RestServicePriceProduct.infrastructure.commons.exceptions.InvalidPriceRequestException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.inditex.RestServicePriceProduct.infrastructure.commons.exceptions.NotFoundPriceRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,8 +16,7 @@ import org.springframework.stereotype.Component;
 public class PriceProductPersistenceAdapter implements PriceProductPersistencePort {
 
     private final PriceProductDao priceProductDao;
-    private static final Logger LOGGER = LoggerFactory.getLogger(PriceProductPersistenceAdapter.class);
-    private static final String MESSAGE_ERROR = "An error occurred while trying to obtain the price information";
+
 
     @Autowired
     public PriceProductPersistenceAdapter(PriceProductDao priceProductDao){
@@ -28,18 +25,12 @@ public class PriceProductPersistenceAdapter implements PriceProductPersistencePo
 
     @Override
     public PriceResponseDTO getPriceByPriceRequest(PriceRequest priceRequest) {
-        PriceResponseDTO priceResponse = new PriceResponseDTO();
-
-        try{
-            PriceEntity priceEntity = PriceMapperEntity.INSTANCE.priceRequestToPriceEntity(priceRequest);
-            priceEntity = priceProductDao.getPriceByPriceEntityAndApplicationDate(priceEntity, priceRequest.getApplicationDate());
-            Price priceDomain = PriceMapperEntity.INSTANCE.priceEntityToPrice(priceEntity);
-            priceResponse = PriceResponseDTOMapper.INSTANCE.priceDomainToPriceResponseDTO(priceDomain);
-        }catch (Exception e){
-            LOGGER.error(MESSAGE_ERROR);
-            throw new InvalidPriceRequestException(MESSAGE_ERROR);
+        PriceEntity priceEntity = PriceMapperEntity.INSTANCE.priceRequestToPriceEntity(priceRequest);
+        PriceEntity foundPriceEntity  = priceProductDao.getPriceByPriceEntityAndApplicationDate(priceEntity, priceRequest.getApplicationDate());
+        if (foundPriceEntity == null) {
+            throw new NotFoundPriceRequestException("No price found for the given parameters.");
         }
-
-        return priceResponse;
+        Price priceDomain = PriceMapperEntity.INSTANCE.priceEntityToPrice(foundPriceEntity);
+        return  PriceResponseDTOMapper.INSTANCE.priceDomainToPriceResponseDTO(priceDomain);
     }
 }
