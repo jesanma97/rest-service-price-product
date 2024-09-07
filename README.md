@@ -8,6 +8,7 @@ This project is a REST service for querying product price data based on a date r
 - **Maven**: Required to build the JAR file.
 - **Docker**: Required to build and run the Docker image.
 
+
 ## Architecture Overview
 
 This project uses Hexagonal Architecture (Ports and Adapters) to organize the code.
@@ -36,6 +37,7 @@ This project uses Hexagonal Architecture (Ports and Adapters) to organize the co
 
 6. **Client Response**:
    - The controller sends the `PriceResponseDTO` back to the client.
+
 
 ## Resources
 
