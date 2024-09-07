@@ -1,7 +1,7 @@
 package com.inditex.RestServicePriceProduct.application.services;
 
 import com.inditex.RestServicePriceProduct.domain.PriceRequest;
-import com.inditex.RestServicePriceProduct.domain.Price;
+import com.inditex.RestServicePriceProduct.infrastructure.adapters.in.web.dto.PriceResponseDTO;
 import com.inditex.RestServicePriceProduct.infrastructure.adapters.out.persistence.PriceProductPersistenceAdapter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,14 +27,14 @@ public class PriceProductServiceTest {
     @InjectMocks
     private PriceProductService priceProductService;
 
-    Price priceResponse;
+    PriceResponseDTO priceResponse;
     PriceRequest priceRequest;
 
     @BeforeEach
     public void setUp(){
         this.priceProductService = new PriceProductService(priceProductPersistenceAdapter);
 
-        priceResponse = new Price();
+        priceResponse = new PriceResponseDTO();
         priceRequest = new PriceRequest();
         priceResponse.setPrice(38.95);
         priceResponse.setIdBrand(1L);
@@ -57,8 +57,8 @@ public class PriceProductServiceTest {
     @Test
     @DisplayName("Test getAllPricesByPriceRequest")
     void getAllPricesByPriceRequest(){
-        when(this.priceProductPersistenceAdapter.getAllPricesByPriceRequest(Mockito.any())).thenReturn(priceResponse);
-        Price response = priceProductService.getAllPricesByPriceRequest(priceRequest);
+        when(this.priceProductPersistenceAdapter.getPriceByPriceRequest(Mockito.any())).thenReturn(priceResponse);
+        PriceResponseDTO response = priceProductService.getPriceByPriceRequest(priceRequest);
         Assertions.assertNotNull(response);
         Assertions.assertEquals(response.getIdProduct(), priceResponse.getIdProduct());
         Assertions.assertEquals(response.getPrice(), priceResponse.getPrice());
