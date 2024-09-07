@@ -1,12 +1,14 @@
 package com.inditex.RestServicePriceProduct.infrastructure.adapters.out.persistence;
 
+import com.inditex.RestServicePriceProduct.domain.Price;
 import com.inditex.RestServicePriceProduct.domain.PriceRequest;
-import com.inditex.RestServicePriceProduct.domain.PriceResponse;
+import com.inditex.RestServicePriceProduct.infrastructure.adapters.in.web.dto.PriceResponseDTO;
 import com.inditex.RestServicePriceProduct.infrastructure.adapters.out.persistence.dao.PriceProductDao;
 import com.inditex.RestServicePriceProduct.infrastructure.adapters.out.persistence.entities.BrandEntity;
 import com.inditex.RestServicePriceProduct.infrastructure.adapters.out.persistence.entities.PriceEntity;
 import com.inditex.RestServicePriceProduct.infrastructure.adapters.out.persistence.entities.ProductEntity;
 import com.inditex.RestServicePriceProduct.infrastructure.commons.Constants;
+import com.inditex.RestServicePriceProduct.infrastructure.commons.exceptions.NotFoundPriceRequestException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,13 +17,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class PriceProductPersistenceAdapterTest {
@@ -32,62 +36,72 @@ public class PriceProductPersistenceAdapterTest {
     @InjectMocks
     private PriceProductPersistenceAdapter priceProductPersistenceAdapter;
 
-    PriceRequest priceRequest;
-    PriceEntity priceEntity;
+    PriceRequest mockPriceRequest;
+    PriceEntity mockPriceEntity;
+    PriceEntity mockFoundPriceEntity;
 
     @BeforeEach
-    public void setUp(){
-        this.priceProductPersistenceAdapter = new PriceProductPersistenceAdapter(priceProductDao);
-        priceRequest = new PriceRequest();
-        priceEntity = new PriceEntity();
-        priceRequest.setIdProduct(35455L);
-        priceRequest.setIdBrand(1L);
-        String dateString = "2020-06-15-16.00.00";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss");
-        LocalDateTime localDateTime = LocalDateTime.parse(dateString, formatter);
-        priceRequest.setApplicationDate(localDateTime);
+    void setUp() {
+        priceProductPersistenceAdapter = new PriceProductPersistenceAdapter(priceProductDao);
 
-        priceEntity.setProduct(new ProductEntity());
-        priceEntity.getProduct().setId(35455L);
-        priceEntity.setBrand(new BrandEntity());
-        priceEntity.getBrand().setId(1);
-        priceEntity.setIdPrice(1L);
-        priceEntity.setStartDate(localDateTime);
-        String endDate = "2020-06-15-18.00.00";
-        DateTimeFormatter formatterEndDate = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss");
-        LocalDateTime localDateTimeEndDate = LocalDateTime.parse(endDate, formatterEndDate);
-        priceEntity.setEndDate(localDateTimeEndDate);
-        priceEntity.setPrice(28.0);
-        priceEntity.setCurr(Constants.Currency.EUR);
-    }
+        // Mock PriceRequest
+        mockPriceRequest = new PriceRequest();
+        mockPriceRequest.setIdProduct(1L);
+        mockPriceRequest.setIdBrand(1L);
+        mockPriceRequest.setApplicationDate(LocalDateTime.now());
 
+        // Mock PriceEntity
+        mockPriceEntity = new PriceEntity();
+        mockPriceEntity.setIdPrice(1L);
+        mockPriceEntity.setProduct(new ProductEntity());
+        mockPriceEntity.getProduct().setId(35455L);
+        mockPriceEntity.setBrand(new BrandEntity());
+        mockPriceEntity.getBrand().setId(1);
+        mockPriceEntity.setStartDate(LocalDateTime.now().minusDays(1));
+        mockPriceEntity.setEndDate(LocalDateTime.now().plusDays(1));
 
-    @Test
-    @DisplayName("Test getAllPricesByPriceRequest Error")
-    void getAllPricesByPriceRequestError(){
-        when(this.priceProductDao.getAllPricesByPriceEntity(Mockito.any())).thenThrow(NullPointerException.class);
-        PriceResponse response = priceProductPersistenceAdapter.getAllPricesByPriceRequest(priceRequest);
-        Assertions.assertNotNull(response);
-        Assertions.assertEquals(response.getIdPrice(), 0);
-        Assertions.assertEquals(response.getIdBrand(), 0);
-        Assertions.assertEquals(response.getIdProduct(), 0);
-        Assertions.assertNull(response.getStartDate());
-        Assertions.assertNull(response.getEndDate());
-        Assertions.assertEquals(response.getPrice(), 0.0);
+        // Mock Found PriceEntity (from DB)
+        mockFoundPriceEntity = new PriceEntity();
+        mockFoundPriceEntity.setIdPrice(2L);  // Different ID to simulate found price
+        mockFoundPriceEntity.setProduct(new ProductEntity());
+        mockFoundPriceEntity.getProduct().setId(35455L);
+        mockFoundPriceEntity.setBrand(new BrandEntity());
+        mockFoundPriceEntity.getBrand().setId(1);
+        mockFoundPriceEntity.setStartDate(LocalDateTime.now().minusDays(1));
+        mockFoundPriceEntity.setEndDate(LocalDateTime.now().plusDays(1));
     }
 
     @Test
-    @DisplayName("Test getAllPricesByPriceRequest Success")
-    void getAllPricesByPriceRequestSuccess(){
-        when(this.priceProductDao.getAllPricesByPriceEntity(Mockito.any())).thenReturn(List.of(priceEntity));
-        PriceResponse response = priceProductPersistenceAdapter.getAllPricesByPriceRequest(priceRequest);
-        Assertions.assertNotNull(response);
-        Assertions.assertEquals(response.getIdPrice(), priceEntity.getIdPrice());
-        Assertions.assertEquals(response.getIdBrand(), priceEntity.getBrand().getId());
-        Assertions.assertEquals(response.getIdProduct(), priceEntity.getProduct().getId());
-        Assertions.assertNotNull(response.getStartDate());
-        Assertions.assertNotNull(response.getEndDate());
-        Assertions.assertEquals(response.getPrice(), priceEntity.getPrice());
+    void getPriceByPriceRequest_Success() {
+        // Given: Mocking the DAO to return the found entity
+        when(priceProductDao.getPriceByPriceEntityAndApplicationDate(any(PriceEntity.class), any(LocalDateTime.class)))
+                .thenReturn(mockFoundPriceEntity);
+
+        // When: Calling the method
+        PriceResponseDTO responseDTO = priceProductPersistenceAdapter.getPriceByPriceRequest(mockPriceRequest);
+
+        // Then: Asserting the results
+        assertNotNull(responseDTO);
+        assertEquals(2L, responseDTO.getIdPrice());  // Found price ID should be 2
+        verify(priceProductDao, times(1))
+                .getPriceByPriceEntityAndApplicationDate(any(PriceEntity.class), any(LocalDateTime.class));
+    }
+
+    @Test
+    void getPriceByPriceRequest_NotFound() {
+        // Given: Mocking the DAO to return null (no price found)
+        when(priceProductDao.getPriceByPriceEntityAndApplicationDate(any(PriceEntity.class), any(LocalDateTime.class)))
+                .thenReturn(null);
+
+        // When: Asserting that the exception is thrown
+        NotFoundPriceRequestException thrown = assertThrows(NotFoundPriceRequestException.class, () -> {
+            priceProductPersistenceAdapter.getPriceByPriceRequest(mockPriceRequest);
+        });
+
+        // Then: Verifying the exception message
+        assertEquals("No price found for the given parameters.", thrown.getMessage());
+        verify(priceProductDao, times(1))
+                .getPriceByPriceEntityAndApplicationDate(any(PriceEntity.class), any(LocalDateTime.class));
     }
 
 }
