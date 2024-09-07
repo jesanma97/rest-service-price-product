@@ -8,6 +8,7 @@ import com.inditex.RestServicePriceProduct.infrastructure.adapters.out.persisten
 import com.inditex.RestServicePriceProduct.infrastructure.adapters.out.persistence.entities.PriceEntity;
 import com.inditex.RestServicePriceProduct.infrastructure.adapters.out.persistence.mappers.PriceMapperEntity;
 import com.inditex.RestServicePriceProduct.infrastructure.adapters.out.persistence.mappers.PriceResponseDTOMapper;
+import com.inditex.RestServicePriceProduct.infrastructure.commons.exceptions.InvalidPriceRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class PriceProductPersistenceAdapter implements PriceProductPersistencePo
 
     private final PriceProductDao priceProductDao;
     private static final Logger LOGGER = LoggerFactory.getLogger(PriceProductPersistenceAdapter.class);
+    private static final String MESSAGE_ERROR = "An error occurred while trying to obtain the price information";
 
     @Autowired
     public PriceProductPersistenceAdapter(PriceProductDao priceProductDao){
@@ -34,7 +36,8 @@ public class PriceProductPersistenceAdapter implements PriceProductPersistencePo
             Price priceDomain = PriceMapperEntity.INSTANCE.priceEntityToPrice(priceEntity);
             priceResponse = PriceResponseDTOMapper.INSTANCE.priceDomainToPriceResponseDTO(priceDomain);
         }catch (Exception e){
-            LOGGER.error("An error occurred while trying to obtain the price information");
+            LOGGER.error(MESSAGE_ERROR);
+            throw new InvalidPriceRequestException(MESSAGE_ERROR);
         }
 
         return priceResponse;
