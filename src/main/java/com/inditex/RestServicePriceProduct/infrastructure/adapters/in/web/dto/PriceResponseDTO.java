@@ -1,4 +1,4 @@
-package com.inditex.RestServicePriceProduct.domain;
+package com.inditex.RestServicePriceProduct.infrastructure.adapters.in.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class PriceResponse {
+public class PriceResponseDTO {
     @JsonProperty("id_brand")
     private long idBrand;
     @JsonProperty("id_product")

@@ -1,7 +1,7 @@
 package com.inditex.RestServicePriceProduct.infrastructure.adapters.out.persistence;
 
+import com.inditex.RestServicePriceProduct.domain.Price;
 import com.inditex.RestServicePriceProduct.domain.PriceRequest;
-import com.inditex.RestServicePriceProduct.domain.PriceResponse;
 import com.inditex.RestServicePriceProduct.infrastructure.adapters.out.persistence.dao.PriceProductDao;
 import com.inditex.RestServicePriceProduct.infrastructure.adapters.out.persistence.entities.BrandEntity;
 import com.inditex.RestServicePriceProduct.infrastructure.adapters.out.persistence.entities.PriceEntity;
@@ -66,7 +66,7 @@ public class PriceProductPersistenceAdapterTest {
     @DisplayName("Test getAllPricesByPriceRequest Error")
     void getAllPricesByPriceRequestError(){
         when(this.priceProductDao.getAllPricesByPriceEntity(Mockito.any())).thenThrow(NullPointerException.class);
-        PriceResponse response = priceProductPersistenceAdapter.getAllPricesByPriceRequest(priceRequest);
+        Price response = priceProductPersistenceAdapter.getAllPricesByPriceRequest(priceRequest);
         Assertions.assertNotNull(response);
         Assertions.assertEquals(response.getIdPrice(), 0);
         Assertions.assertEquals(response.getIdBrand(), 0);
@@ -80,7 +80,7 @@ public class PriceProductPersistenceAdapterTest {
     @DisplayName("Test getAllPricesByPriceRequest Success")
     void getAllPricesByPriceRequestSuccess(){
         when(this.priceProductDao.getAllPricesByPriceEntity(Mockito.any())).thenReturn(List.of(priceEntity));
-        PriceResponse response = priceProductPersistenceAdapter.getAllPricesByPriceRequest(priceRequest);
+        Price response = priceProductPersistenceAdapter.getAllPricesByPriceRequest(priceRequest);
         Assertions.assertNotNull(response);
         Assertions.assertEquals(response.getIdPrice(), priceEntity.getIdPrice());
         Assertions.assertEquals(response.getIdBrand(), priceEntity.getBrand().getId());

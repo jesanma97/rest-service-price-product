@@ -7,6 +7,8 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "BRAND")
 public class BrandEntity {
     @Id
@@ -17,28 +19,4 @@ public class BrandEntity {
 
     @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
     private List<PriceEntity> prices;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getNameBrand() {
-        return nameBrand;
-    }
-
-    public void setNameBrand(String nameBrand) {
-        this.nameBrand = nameBrand;
-    }
-
-    public List<PriceEntity> getPrices() {
-        return prices;
-    }
-
-    public void setPrices(List<PriceEntity> prices) {
-        this.prices = prices;
-    }
 }
