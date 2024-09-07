@@ -8,6 +8,35 @@ This project is a REST service for querying product price data based on a date r
 - **Maven**: Required to build the JAR file.
 - **Docker**: Required to build and run the Docker image.
 
+## Architecture Overview
+
+This project uses Hexagonal Architecture (Ports and Adapters) to organize the code.
+
+### Key Points:
+- **Domain Layer**: Contains core business logic and domain models (e.g., `Price`).
+- **Application Layer**: Manages use cases and interacts with domain models through defined interfaces (ports).
+- **Infrastructure Layer**: Handles communication with external systems like APIs and databases through adapters.
+
+### Example: Get Product Price Information
+
+1. **Client Request**:
+   - The client sends a request to the API to get a product price information.
+
+2. **Controller**:
+   - The API controller receives the request and calls a service method to process it.
+
+3. **Application Layer**:
+   - The service method in the Application Layer requests data from the `PriceProductPersistenceAdapter`.
+
+4. **Persistence Adapter**:
+   - The adapter gets data from `PriceProductDao` and converts into the domain object (`Price`).
+
+5. **Application Layer**:
+   - The internal model is processed and converted into a `PriceResponseDTO`.
+
+6. **Client Response**:
+   - The controller sends the `PriceResponseDTO` back to the client.
+
 ## Resources
 
 In the `src/main/resources` directory, you will find:
