@@ -3,11 +3,9 @@ package com.inditex.RestServicePriceProduct.infrastructure.adapters.in.web;
 import com.inditex.RestServicePriceProduct.application.ports.in.PriceProductConsultPort;
 import com.inditex.RestServicePriceProduct.application.services.PriceProductService;
 import com.inditex.RestServicePriceProduct.domain.PriceRequest;
-import com.inditex.RestServicePriceProduct.domain.PriceResponse;
+import com.inditex.RestServicePriceProduct.infrastructure.adapters.in.web.dto.PriceResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class PriceProductConsultAdapter implements PriceProductConsultPort {
@@ -20,8 +18,8 @@ public class PriceProductConsultAdapter implements PriceProductConsultPort {
     }
 
     @Override
-    public PriceResponse getAllPricesByPriceRequest(PriceRequest priceRequest){
-        return priceProductService.getAllPricesByPriceRequest(priceRequest);
+    public PriceResponseDTO getPriceByPriceRequest(PriceRequest priceRequest) {
+        return priceProductService.getPriceByPriceRequest(priceRequest);
     }
 
 

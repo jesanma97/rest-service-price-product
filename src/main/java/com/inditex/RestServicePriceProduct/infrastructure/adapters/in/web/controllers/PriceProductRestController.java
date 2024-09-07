@@ -2,18 +2,13 @@ package com.inditex.RestServicePriceProduct.infrastructure.adapters.in.web.contr
 
 import com.inditex.RestServicePriceProduct.application.ports.in.PriceProductConsultPort;
 import com.inditex.RestServicePriceProduct.domain.PriceRequest;
-import com.inditex.RestServicePriceProduct.domain.PriceResponse;
 import com.inditex.RestServicePriceProduct.infrastructure.adapters.in.web.PriceProductConsultAdapter;
+import com.inditex.RestServicePriceProduct.infrastructure.adapters.in.web.dto.PriceResponseDTO;
 import com.inditex.RestServicePriceProduct.infrastructure.commons.Endpoints;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(Endpoints.PARENT_URL)
@@ -42,9 +37,9 @@ public class PriceProductRestController {
      * This method uses the `PriceProductConsultPort` interface to delegate the logic for retrieving the pricing
      * information from the underlying data sources.
      */
-    @GetMapping(Endpoints.PRICES)
-    public PriceResponse getAllPricesByPriceRequest(@Valid @RequestBody PriceRequest priceRequest){
-        return priceProductConsultPort.getAllPricesByPriceRequest(priceRequest);
+    @PostMapping(Endpoints.PRICES)
+    public PriceResponseDTO getPriceByPriceRequest(@Valid @RequestBody PriceRequest priceRequest){
+        return priceProductConsultPort.getPriceByPriceRequest(priceRequest);
     }
 
 
